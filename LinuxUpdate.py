@@ -2,10 +2,11 @@
 
 """
 Nombre del Script: LinuxUpdate
-Autor: Hector Manuel Arango Martin
+Autor: Hector Arango
 Github: https://github.com/hmam13
 Descripcióon: Herramienta para automatizar la actualización de Linux.
 Lenguaje: Python
+Version: 1.0
 """
 
 import tkinter as tk
