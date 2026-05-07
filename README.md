@@ -39,6 +39,11 @@ REQUISITOS:
 3. Privilegios de superusuario (sudo).
 
 -----------------------------------------------------------
+INSTALACION:
+-----------------------------------------------------------
+Descarga o clona el script.
+
+-----------------------------------------------------------
 MODO DE USO:
 -----------------------------------------------------------
 1. Otorgar permisos de ejecucion al archivo:
