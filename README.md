@@ -9,7 +9,7 @@ AUTOR:
 -----------------------------------------------------------
 Desarrollado por Hector Arango (hmam)
 Github: https://github.com/hmam13
-Version: 1.0
+Version: 1.2.0
 
 -----------------------------------------------------------
 ADVERTENCIAS:
@@ -23,9 +23,9 @@ DESCRIPCION:
 -----------------------------------------------------------
 LinuxUpdate es una herramienta con interfaz grafica (GUI) diseñada para 
 automatizar y simplificar el proceso de actualizacion en distribuciones 
-de Linux basadas en Kali, Parrot OS y Arch Linux. 
+de Linux. 
 
-El script utiliza una interfaz moderna en "Modo Oscuro" para que el usuario 
+En esta nueva version, el script autoselecciona la distribución para que el usuario 
 pueda actualizar su sistema con un solo clic, ejecutando los comandos 
 apropiados en la terminal de forma automatica.
 
@@ -54,7 +54,7 @@ MODO DE USO:
    o
    sudo python3 LinuxUpdate.py
 
-3. Seleccionar la distribucion correspondiente en la ventana emergente.
+3. La distribución se autoseleccionará en la ventana emergente.
 4. Confirmar la actualizacion en el cuadro de dialogo.
 5. El proceso se visualizara en la terminal.
 
@@ -63,4 +63,7 @@ DISTRIBUCIONES SOPORTADAS:
 -----------------------------------------------------------
 - Kali Linux
 - Parrot OS
-- Arch Linux 
+- Arch Linux
+- Ubuntu
+- Debian
+- Fedora
