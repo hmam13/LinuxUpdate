@@ -2,190 +2,328 @@
 
 """
 Nombre del Script: LinuxUpdate
-Autor: Hector Arango
+Autor: Hector Arango 
 Github: https://github.com/hmam13
 Descripcióon: Herramienta para automatizar la actualización de Linux.
 Lenguaje: Python
-Version: 1.0
+Version: 1.2.0
 """
 
-import tkinter as tk
+# ──────────────────────────────────────────────
+#  Librerías
+# ──────────────────────────────────────────────
+from tkinter import *
 from tkinter import messagebox
+import os
 import subprocess
 import sys
-import os
 
-# --- Configuración de Colores de Terminal ---
+# ──────────────────────────────────────────────
+#  Configuración de Colores de Terminal
+# ──────────────────────────────────────────────
 VERDE = "\033[1;32m"
 ROJO = "\033[1;31m"
 AZUL = "\033[1;34m"
 AMARILLO = "\033[1;33m"
 FIN = "\033[0m"
 
-# --- Configuración de Colores de Interfaz (Simulando Dark Mode) ---
+# ──────────────────────────────────────────────
+#  Configuración de Colores de Interfaz
+# ──────────────────────────────────────────────
 BG_COLOR = "#242424"      # Fondo principal
 FG_COLOR = "#FFFFFF"      # Texto
 FRAME_COLOR = "#2B2B2B"   # Fondo de los contenedores
 BTN_GREEN = "#2eb82e"     # Botón actualizar
 BTN_RED = "#cc0000"       # Botón cerrar
 BTN_GRAY = "#3d3d3d"      # Botón ayuda
+SELECT_COLOR = "#3a3a5c"  # Color cuando la distro está seleccionada
 
-# --- Funciones Lógicas ---
+# ──────────────────────────────────────────────
+#  Funciones Lógicas
+# ──────────────────────────────────────────────
+class Update:
+    def __init__(self, ventana):
+        self.venta = ventana
 
-# ---- Kali ----
-def update_kali_linux():
-    if messagebox.askquestion("Update", "¿Desea Actualizar Kali Linux?") == "yes":
-        ventana.destroy()
-        
-        def ejecutar_comando(comando, titulo):
-            print(f"{AZUL}{titulo}{FIN}\n")
-            
-            try:
-                subprocess.run(comando, check=True)
-            except subprocess.CalledProcessError:
-                print(f"\n{ROJO}[!] Hubo un error al ejecutar {titulo} {FIN}")
-                os.system("tput cnorm")
-                sys.exit(1)
-       
-        def actualizacion():
-            os.system("clear")
-            os.system("tput civis")
-            
-            try:
-                ejecutar_comando(["sudo", "apt", "update"], "UPDATE")
-                print("\n" + "-"*30 + "\n")
-                ejecutar_comando(["sudo", "apt-get", "dist-upgrade", "-y"], "UPGRADE")
-            finally:
-                os.system("tput cnorm")
-                print(f"\n{VERDE}[+] Proceso completado exitosamente.{FIN}")
-       
-        if os.geteuid() != 0:
-            print(f"{AMARILLO}[!] Este script debe ejecutarse con sudo.{FIN}")
-            sys.exit(1)
-        
-        actualizacion()
+#  Kali Linux
+    def update_kali():
+        if messagebox.askquestion("Update", "¿Desea Actualizar Kali Linux?") == "yes":
+            ventana.destroy()
 
-# ---- Parrot ----
-def update_parrot_os():
-    if messagebox.askquestion("Update", "¿Desea Actualizar Parrot Os?") == "yes":
-        ventana.destroy()
-        
-        def ejecutar_comando(comando, titulo):
-            print(f"{AZUL}{titulo}{FIN}\n")
-           
-            try:
-                subprocess.run(comando, check=True)
-            except subprocess.CalledProcessError:
-                print(f"\n{ROJO}[!] Hubo un error al ejecutar {titulo} {FIN}")
-                os.system("tput cnorm")
-                sys.exit(1)
+            def ejecutar_comando(comando, titulo):
+                print(f"{AZUL}{titulo}{FIN}\n")
+                try:
+                    subprocess.run(comando, check=True)
+                except subprocess.CalledProcessError:
+                    print(f"\n{ROJO}[!] Hubo un error al ejecutar {titulo} {FIN}")
+                    os.system("tput cnorm")
+                    sys.exit(1)
        
-        def actualizacion():
-            os.system("clear")
-            os.system("tput civis")
-           
-            try:
-                ejecutar_comando(["sudo", "apt", "update"], "UPDATE")
-                print("\n" + "-"*30 + "\n")
-                ejecutar_comando(["sudo", "parrot-upgrade", "-y"], "UPGRADE")
-            finally:
-                os.system("tput cnorm")
-                print(f"\n{VERDE}[+] Proceso completado exitosamente.{FIN}")
+            def actualizacion():
+                os.system("clear")
+                os.system("tput civis")
+                try:
+                    ejecutar_comando(["sudo", "apt", "update"], "UPDATE")
+                    print("\n" + "-"*30 + "\n")
+                    ejecutar_comando(["sudo", "apt-get", "dist-upgrade", "-y"], "UPGRADE")
+                    print("\n" + "-"*30 + "\n")
+                    ejecutar_comando(["sudo", "apt-get", "autoremove", "-y"], "AUTOREMOVE")
+                finally:
+                    os.system("tput cnorm")
+                    print(f"\n{VERDE}[+] Proceso completado exitosamente.{FIN}")
        
-        if os.geteuid() != 0:
-            print(f"{AMARILLO}[!] Este script debe ejecutarse con sudo.{FIN}")
-            sys.exit(1)
-       
-        actualizacion()
-
-# ---- Arch ----
-def update_arch():
-    if messagebox.askquestion("Update", "¿Desea Actualizar Arch?") == "yes":
-        ventana.destroy()
-        
-        def ejecutar_comando(comando, titulo):
-            print(f"{AZUL}{titulo}{FIN}\n")
-           
-            try:
-                subprocess.run(comando, check=True)
-            except subprocess.CalledProcessError:
-                print(f"\n{ROJO}[!] Hubo un error al ejecutar {titulo} {FIN}")
-                os.system("tput cnorm")
+            if os.geteuid() != 0:
+                print(f"{AMARILLO}[!] Este script debe ejecutarse con sudo.{FIN}")
                 sys.exit(1)
         
-        def actualizacion():
-            os.system("clear")
-            os.system("tput civis")
-            
-            try:
-                ejecutar_comando(["sudo", "pacman", "-Syu"], "UPDATE and UPGRADE")
-            finally:
-                os.system("tput cnorm")
-                print(f"\n{VERDE}[+] Proceso completado exitosamente.{FIN}")
+            actualizacion()
+# Parrot
+    def update_parrot():
+        if messagebox.askquestion("Update", "¿Desea Actualizar Parrot OS?") == "yes":
+            ventana.destroy()
+
+            def ejecutar_comando(comando, titulo):
+                print(f"{AZUL}{titulo}{FIN}\n")
+                try:
+                    subprocess.run(comando, check=True)
+                except subprocess.CalledProcessError:
+                    print(f"\n{ROJO}[!] Hubo un error al ejecutar {titulo} {FIN}")
+                    os.system("tput cnorm")
+                    sys.exit(1)
+       
+            def actualizacion():
+                os.system("clear")
+                os.system("tput civis")
+                try:
+                    ejecutar_comando(["sudo", "apt", "update"], "UPDATE")
+                    print("\n" + "-"*30 + "\n")
+                    ejecutar_comando(["sudo", "parrot-upgrade", "-y"], "UPGRADE")
+                    print("\n" + "-"*30 + "\n")
+                    ejecutar_comando(["sudo", "apt-get", "autoremove", "-y"], "AUTOREMOVE")
+                finally:
+                    os.system("tput cnorm")
+                    print(f"\n{VERDE}[+] Proceso completado exitosamente.{FIN}")
+       
+            if os.geteuid() != 0:
+                print(f"{AMARILLO}[!] Este script debe ejecutarse con sudo.{FIN}")
+                sys.exit(1)
         
-        if os.geteuid() != 0:
-            print(f"{AMARILLO}[!] Este script debe ejecutarse con sudo.{FIN}")
-            sys.exit(1)
+            actualizacion()
+# Ubuntu
+    def update_ubuntu():
+        if messagebox.askquestion("Update", "¿Desea Actualizar Ubuntu / Mint?") == "yes":
+            ventana.destroy()
+
+            def ejecutar_comando(comando, titulo):
+                print(f"{AZUL}{titulo}{FIN}\n")
+                try:
+                    subprocess.run(comando, check=True)
+                except subprocess.CalledProcessError:
+                    print(f"\n{ROJO}[!] Hubo un error al ejecutar {titulo} {FIN}")
+                    os.system("tput cnorm")
+                    sys.exit(1)
+       
+            def actualizacion():
+                os.system("clear")
+                os.system("tput civis")
+                try:
+                    ejecutar_comando(["sudo", "apt", "update"], "UPDATE")
+                    print("\n" + "-"*30 + "\n")
+                    ejecutar_comando(["sudo", "apt", "upgrade", "-y"], "UPGRADE")
+                    print("\n" + "-"*30 + "\n")
+                    ejecutar_comando(["sudo", "apt", "autoremove", "-y"], "AUTOREMOVE")
+                finally:
+                    os.system("tput cnorm")
+                    print(f"\n{VERDE}[+] Proceso completado exitosamente.{FIN}")
+       
+            if os.geteuid() != 0:
+                print(f"{AMARILLO}[!] Este script debe ejecutarse con sudo.{FIN}")
+                sys.exit(1)
         
-        actualizacion()
+            actualizacion()
+# Debian
+    def update_debian():
+        if messagebox.askquestion("Update", "¿Desea Actualizar Debian?") == "yes":
+            ventana.destroy()
 
-def help_info():
-    messagebox.showinfo("Modo de Uso", 
-        "Seleccione su distribución para actualizar.\n\n"
-        "[!] No use una opción que no corresponda a su distribucion, esto puede ocasionar problemas.")
+            def ejecutar_comando(comando, titulo):
+                print(f"{AZUL}{titulo}{FIN}\n")
+                try:
+                    subprocess.run(comando, check=True)
+                except subprocess.CalledProcessError:
+                    print(f"\n{ROJO}[!] Hubo un error al ejecutar {titulo} {FIN}")
+                    os.system("tput cnorm")
+                    sys.exit(1)
+       
+            def actualizacion():
+                os.system("clear")
+                os.system("tput civis")
+                try:
+                    ejecutar_comando(["sudo", "apt", "update"], "UPDATE")
+                    print("\n" + "-"*30 + "\n")
+                    ejecutar_comando(["sudo", "apt-get", "dist-upgrade", "-y"], "UPGRADE")
+                    print("\n" + "-"*30 + "\n")
+                    ejecutar_comando(["sudo", "apt-get", "autoremove", "-y"], "AUTOREMOVE")
+                finally:
+                    os.system("tput cnorm")
+                    print(f"\n{VERDE}[+] Proceso completado exitosamente.{FIN}")
+       
+            if os.geteuid() != 0:
+                print(f"{AMARILLO}[!] Este script debe ejecutarse con sudo.{FIN}")
+                sys.exit(1)
+        
+            actualizacion()
+# Arch
+    def update_arch():
+        if messagebox.askquestion("Update", "¿Desea Actualizar Arch Linux?") == "yes":
+            ventana.destroy()
 
-def salir_programa():
-    ventana.destroy()
+            def ejecutar_comando(comando, titulo):
+                print(f"{AZUL}{titulo}{FIN}\n")
+                try:
+                    subprocess.run(comando, check=True)
+                except subprocess.CalledProcessError:
+                    print(f"\n{ROJO}[!] Hubo un error al ejecutar {titulo} {FIN}")
+                    os.system("tput cnorm")
+                    sys.exit(1)
+       
+            def actualizacion():
+                os.system("clear")
+                os.system("tput civis")
+                try:
+                    ejecutar_comando(["sudo", "pacman", "-Syu", "--noconfirm"], "UPDATE")
+                finally:
+                    os.system("tput cnorm")
+                    print(f"\n{VERDE}[+] Proceso completado exitosamente.{FIN}")
+       
+            if os.geteuid() != 0:
+                print(f"{AMARILLO}[!] Este script debe ejecutarse con sudo.{FIN}")
+                sys.exit(1)
+        
+            actualizacion()
+# Fedora
+    def update_fedora():
+        if messagebox.askquestion("Update", "¿Desea Actualizar Fedora?") == "yes":
+            ventana.destroy()
 
-# --- Interfaz Gráfica ---
+            def ejecutar_comando(comando, titulo):
+                print(f"{AZUL}{titulo}{FIN}\n")
+                try:
+                    subprocess.run(comando, check=True)
+                except subprocess.CalledProcessError:
+                    print(f"\n{ROJO}[!] Hubo un error al ejecutar {titulo} {FIN}")
+                    os.system("tput cnorm")
+                    sys.exit(1)
+       
+            def actualizacion():
+                os.system("clear")
+                os.system("tput civis")
+                try:
+                    ejecutar_comando(["sudo", "dnf", "upgrade", "--refresh", "-y"], "UPGRADE")
+                    print("\n" + "-"*30 + "\n")
+                    ejecutar_comando(["sudo", "dnf", "autoremove", "-y"], "AUTOREMOVE")
+                finally:
+                    os.system("tput cnorm")
+                    print(f"\n{VERDE}[+] Proceso completado exitosamente.{FIN}")
+       
+            if os.geteuid() != 0:
+                print(f"{AMARILLO}[!] Este script debe ejecutarse con sudo.{FIN}")
+                sys.exit(1)
+        
+            actualizacion()
 
-ventana = tk.Tk()
-ventana.title("LinuxUpdate")
-ventana.geometry("350x400")
+# ──────────────────────────────────────────────
+#  Interfaz gráfica
+# ──────────────────────────────────────────────
+ventana = Tk()
+ventana.title("LinuxUpdate v1.2")
+ventana.geometry("400x580") # Un poco más alta para que quepa el texto
 ventana.configure(bg=BG_COLOR)
 
-# --- Widgets ---
+# Variables de control
+seleccion = StringVar()
+texto_distro = "No detectada" # Variable para mostrar en el Label
 
-# Título Principal
-label_titulo = tk.Label(ventana, text="Seleccione su distribución Linux:", font=("Roboto", 12, "bold"), bg=BG_COLOR, fg=FG_COLOR)
-label_titulo.pack(pady=(25, 15), padx=20, anchor="w")
+# Auto-selección y Detección 
+try:
+    if os.path.exists("/etc/os-release"):
+        with open("/etc/os-release", "r") as f:
+            info_distro = f.read().lower()
+            
+            if "kali" in info_distro:
+                seleccion.set("Kali")
+                texto_distro = "Kali Linux"
+            elif "parrot" in info_distro:
+                seleccion.set("Parrot Os")
+                texto_distro = "Parrot OS"
+            elif "ubuntu" in info_distro or "mint" in info_distro:
+                seleccion.set("Ubuntu / Mint")
+                texto_distro = "Ubuntu/Mint"
+            elif "debian" in info_distro:
+                seleccion.set("Debian")
+                texto_distro = "Debian"
+            elif "arch" in info_distro:
+                seleccion.set("Arch")
+                texto_distro = "Arch Linux"
+            elif "fedora" in info_distro:
+                seleccion.set("Fedora")
+                texto_distro = "Fedora"
+except Exception:
+    pass
 
-# Función auxiliar para crear filas (frames)
-def crear_fila(nombre_distro, comando_update):
+# Label Distribución
+label_distro = Label(ventana, text=f"Distribución: {texto_distro}", font=("Roboto", 12, "bold"), bg=BG_COLOR, fg=FG_COLOR)
+label_distro.pack(side="top", anchor="w", pady=(10, 0), padx=15)
+
+def ejecutar_actualizacion():
+    distro = seleccion.get()
     
-    frame = tk.Frame(ventana, bg=FRAME_COLOR, bd=0)
+    if distro == "":
+        messagebox.showinfo("Error", "Por favor, selecciona su distribución.")
+    elif distro == "Kali":
+        Update.update_kali()
+    elif distro == "Parrot Os":
+        Update.update_parrot()
+    elif distro == "Ubuntu / Mint":
+        Update.update_ubuntu()
+    elif distro == "Debian":
+        Update.update_debian()
+    elif distro == "Arch":
+        Update.update_arch()
+    elif distro == "Fedora":
+        Update.update_fedora()
+        
+def crear_fila(nombre_distro):
+    frame = Frame(ventana, bg=FRAME_COLOR, bd=0)
     frame.pack(padx=20, pady=5, fill="x")
     
-    lbl = tk.Label(frame, text=nombre_distro, font=("Roboto", 11), bg=FRAME_COLOR, fg=FG_COLOR)
-    lbl.pack(side="left", padx=15, pady=15)
-    
-    btn = tk.Button(frame, text="Actualizar", width=10, bg=BTN_GREEN, fg="white", activebackground="#238e23", activeforeground="white", relief="flat", cursor="hand2", command=comando_update)
-    btn.pack(side="right", padx=15, pady=10)
+    rb = Radiobutton(frame, text=nombre_distro, variable=seleccion, value=nombre_distro, font=("Roboto", 11, "bold"), bg=FRAME_COLOR, fg=FG_COLOR, activebackground=SELECT_COLOR, activeforeground=FG_COLOR, selectcolor=SELECT_COLOR, indicatoron=False, relief="flat", borderwidth=0, padx=15, pady=15, cursor="hand2")
+    rb.pack(fill="both", expand=True)
     return frame
 
-# Contenedores de Distribuciones
-crear_fila("Kali Linux", update_kali_linux)
-crear_fila("Parrot OS", update_parrot_os)
-crear_fila("Arch Linux", update_arch)
+# Creación de distribuciones.
+crear_fila("Kali")
+crear_fila("Parrot Os")
+crear_fila("Ubuntu / Mint")
+crear_fila("Debian")
+crear_fila("Arch")
+crear_fila("Fedora")
 
-# Espaciador
-tk.Label(ventana, bg=BG_COLOR).pack()
+# Botón de Actualizar
+boton_actualizar = Button(ventana, text="ACTUALIZAR", font=("Roboto", 11, "bold"), bg=BTN_GREEN, fg=FG_COLOR, activebackground="#238e23", activeforeground="white", relief="flat", cursor="hand2", command=ejecutar_actualizacion)
+boton_actualizar.pack(padx=20, pady=15, fill="x")
 
 # Botones Inferiores (Ayuda y Salir)
-frame_acciones = tk.Frame(ventana, bg=BG_COLOR)
+frame_acciones = Frame(ventana, bg=BG_COLOR)
 frame_acciones.pack(pady=5)
+#Salir
+Button(frame_acciones, text="Cerrar", width=12, bg=BTN_RED, fg="white", relief="flat", cursor="hand2", command=ventana.destroy).pack(side="left", padx=10)
+#Ayuda
+Button(frame_acciones, text="Ayuda", width=12, bg=BTN_GRAY, fg="white", relief="flat", cursor="hand2", command=lambda: messagebox.showinfo("Ayuda", f"Se ha detectado {texto_distro}. Si es incorrecto, cambia a tu distribución.")).pack(side="left", padx=10)
 
-boton_ayuda = tk.Button(frame_acciones, text="Ayuda", width=12, bg=BTN_GRAY, fg="white", activebackground="#555555", activeforeground="white", relief="flat", cursor="hand2", command=help_info)
-boton_ayuda.pack(side="left", padx=10)
-
-boton_salir = tk.Button(frame_acciones, text="Cerrar", width=12, bg=BTN_RED, fg="white", activebackground="#990000", activeforeground="white", relief="flat", cursor="hand2", command=salir_programa)
-boton_salir.pack(side="left", padx=10)
-
-# --- Banner ---
-
-# Usamos place para fijarlo en la esquina sin mover los otros elementos
-label_banner = tk.Label(ventana, text="By: hmam", font=("Roboto", 9, "italic"), bg=BG_COLOR, fg="#555555")
-label_banner.place(relx=0.02, rely=0.98, anchor="sw")
+# Banner
+banner = Label(ventana, text="By: hmam", font=("Roboto", 9, "italic"), bg=BG_COLOR, fg=FG_COLOR)
+banner.place(relx=0.02, rely=0.98, anchor="sw")
 
 # Bucle
 ventana.mainloop()
