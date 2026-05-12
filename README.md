@@ -1,35 +1,27 @@
-=========================================
-      ¡BIENVENIDO A TU ACTUALIZADOR!
-=========================================
-
 # LinuxUpdate
 
------------------------------------------------------------
 AUTOR:
 -----------------------------------------------------------
-Desarrollado por Hector Arango (hmam)
+Desarrollado por Hector Arango 
 Github: https://github.com/hmam13
 Version: 1.2.0
 
+DESCRIPCION:
 -----------------------------------------------------------
+En esta nueva version, el script autoselecciona tu distribución para solo
+presionar el botón de actualizar que está en la parte inferior de la ventana, 
+ejecutando los comandos apropiados en la terminal de forma automatica.
+
+LinuxUpdate es una herramienta con interfaz grafica (GUI) diseñada para 
+automatizar y simplificar el proceso de actualizacion en distribuciones 
+de Linux.
+
 ADVERTENCIAS:
 -----------------------------------------------------------
 [!] No intente utilizar una opcion que no corresponda a su distribucion actual. 
 Esto podria intentar instalar paquetes incompatibles o causar errores en 
 su gestor de paquetes.
-
------------------------------------------------------------
-DESCRIPCION:
------------------------------------------------------------
-LinuxUpdate es una herramienta con interfaz grafica (GUI) diseñada para 
-automatizar y simplificar el proceso de actualizacion en distribuciones 
-de Linux. 
-
-En esta nueva version, el script autoselecciona la distribución para que el usuario 
-pueda actualizar su sistema con un solo clic, ejecutando los comandos 
-apropiados en la terminal de forma automatica.
-
------------------------------------------------------------
+ 
 REQUISITOS:
 -----------------------------------------------------------
 1. Python 3 instalado.
@@ -38,12 +30,10 @@ REQUISITOS:
    - En sistemas basados en Arch: sudo pacman -S tk
 3. Privilegios de superusuario (sudo).
 
------------------------------------------------------------
 INSTALACION:
 -----------------------------------------------------------
-Descarga o clona el script.
+apt git clone https://github.com/hmam13/LinuxUpdate
 
------------------------------------------------------------
 MODO DE USO:
 -----------------------------------------------------------
 1. Otorgar permisos de ejecucion al archivo:
@@ -58,7 +48,6 @@ MODO DE USO:
 4. Confirmar la actualizacion en el cuadro de dialogo.
 5. El proceso se visualizara en la terminal.
 
------------------------------------------------------------
 DISTRIBUCIONES SOPORTADAS:
 -----------------------------------------------------------
 - Kali Linux
